@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>xingyun下载站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 15px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff9d;
+            text-shadow: 0 0 15px #00ff9d;
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(90deg, #0a0a0a, #121212, #0a0a0a);
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 15px 0;
+            justify-content: center;
+        }
+        .btn {
+            padding: 10px 18px;
+            background: #00ff9d;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #00cc7d;
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .btn-secondary:hover {
+            background: #2a2a2a;
+        }
+        .status-bar {
+            padding: 10px 20px;
+            background: #121212;
+            border-radius: 12px;
+            color: #ccc;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section {
+            background: #121212;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #1a1a1a;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #00ff9d;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px #00ff9d;
+        }
+        .section-desc {
+            color: #ccc;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .download-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-aisi {
+            background: #0066cc;
+            color: #80bfff;
+        }
+        .btn-aisi:hover {
+            background: #0052a3;
+            transform: scale(1.05);
+        }
+        .btn-sign {
+            background: #00cc7d;
+            color: #000;
+        }
+        .btn-sign:hover {
+            background: #00b36b;
+            transform: scale(1.05);
+        }
+        .contact-section {
+            background: #121212;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #1a1a1a;
+        }
+        .contact-title {
+            font-size: 20px;
+            color: #00ff9d;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        .contact-label {
+            color: #ccc;
+            font-size: 15px;
+        }
+        .contact-value {
+            color: #00ff9d;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .input-area {
+            padding: 15px 20px;
+            background: #121212;
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+        }
+        #user-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+        #send-btn {
+            padding: 12px 24px;
+            background: #00ff9d;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #121212;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #00ff9d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">XINGYUN 下载站</div>
+        <div class="nav">
+            <button class="btn" id="home-btn">首页</button>
+            <button class="btn btn-secondary" id="chat-btn">AI对话</button>
+        </div>
+        <div class="status-bar">
+            <span>xingyun下载站 - 专属苹果资源下载平台</span>
+        </div>
+        <div class="section">
+            <div class="section-title">下载专区</div>
+            <div class="section-desc">
+                本站为xingyun专属下载站，提供苹果设备专属资源下载，所有资源持续更新，欢迎使用！
+                <br>仅保留爱思下载与签名应用两大核心板块，满足你的刷机、越狱、签名需求
+            </div>
+            <div class="download-buttons">
+                <button class="download-btn btn-aisi" id="aisi-btn">爱思下载（密码：1314520）</button>
+                <button class="download-btn btn-sign" id="sign-btn">签名应用（密码：1314520）</button>
+            </div>
+        </div>
+        <div class="contact-section">
+            <div class="contact-title">联系我们</div>
+            <div class="contact-item">
+                <span class="contact-label">QQ交流群</span>
+                <span class="contact-value">1013017510</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-label">反馈邮箱</span>
+                <span class="contact-value">3835347820@qq.com</span>
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="输入消息...">
+            <button id="send-btn">发送</button>
+        </div>
+    </div>
+    <div class="modal" id="ad-modal">
+        <div class="modal-content">
+            <div class="modal-title">📢 观看广告继续</div>
+            <p>第三方广告位</p>
+            <button class="btn" id="close-ad">关闭广告</button>
+        </div>
+    </div>
+    <script>
+        const AISI_URL = "https://wwalu.lanzoub.com/b016kefmrc";
+        const SIGN_URL = "https://wwalu.lanzoub.com/b016kefmmh";
+        const PASSWORD = "1314520";
+        document.getElementById("aisi-btn").addEventListener("click", () => {
+            window.open(AISI_URL, "_blank");
+            alert(`爱思下载密码：${PASSWORD}`);
+        });
+        document.getElementById("sign-btn").addEventListener("click", () => {
+            window.open(SIGN_URL, "_blank");
+            alert(`签名应用下载密码：${PASSWORD}`);
+        });
+        document.getElementById("close-ad").addEventListener("click", () => {
+            document.getElementById("ad-modal").style.display = "none";
+        });
+    </script>
+</body>
+</html>
+
