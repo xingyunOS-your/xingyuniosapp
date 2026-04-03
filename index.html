@@ -14,9 +14,8 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
 .download-btn{display:block;width:100%;padding:16px;border-radius:12px;border:none;font-size:18px;font-weight:bold;color:#fff;background:#222;cursor:pointer}
 .btn-aisi{background:#0066cc}
 .btn-sign{background:#00b894}
-.btn-gta{background:#cc2222}
-.btn-in{background:#2277cc}
-.btn-ml{background:#22cc88}
+.btn-cof{background:#9933cc}
+.contact{text-align:center;color:#aaa;font-size:14px}
 </style>
 </head>
 <body>
@@ -31,16 +30,8 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
     <button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
       签名应用 | 密码：1314520
     </button>
-
-    <!-- 你要的 3 个真实安装按钮 -->
-    <button class="download-btn btn-gta" onclick="location.href='itms-services://?action=download-manifest&url=./gta.plist'">
-      安装 GTA
-    </button>
-    <button class="download-btn btn-in" onclick="location.href='itms-services://?action=download-manifest&url=./in.plist'">
-      安装 无尽之剑 高版本
-    </button>
-    <button class="download-btn btn-ml" onclick="location.href='itms-services://?action=download-manifest&url=./ml.plist'">
-      安装 无尽之剑 低版本
+    <button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
+      下载 COF
     </button>
   </div>
 
@@ -56,7 +47,7 @@ function isPC() {
 if(isPC()){
   alert("电脑端仅支持预览，请使用手机访问！");
 } else {
-  alert("本IPA并未签名，请越狱设备安装！");
+  alert("本IPA并未签名，建议越狱设备使用IPA Installer安装！");
 }
 </script>
 </body>
