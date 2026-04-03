@@ -17,12 +17,10 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
 .contact{text-align:center;color:#888;font-size:14px;line-height:1.8}
 </style>
 </head>
-
 <body>
 <div class="container">
   <div class="title">xingyun下载站</div>
   <div class="desc">专注苹果应用下载<br>所有资源均测试可用，放心下载</div>
-
   <div class="btn-box">
     <button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
       爱思下载 | 密码：1314520
@@ -31,23 +29,23 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
       签名应用 | 密码：1314520
     </button>
   </div>
-
   <div class="contact">
     交流群：1013017510
   </div>
 </div>
 
 <script>
-// 电脑访问直接不弹，避免尴尬
-function isMobile() {
-  return /Android|iPhone|iPad|iPod/.test(navigator.userAgent);
+// 电脑访问不弹
+function isPC() {
+  return !/Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 }
-
-if (isMobile()) {
+if(isPC()){
+  alert("电脑端仅支持预览，请使用手机访问！");
+} else {
   alert("本IPA并未签名，请越狱设备安装！");
-  if (confirm("是否安装我们的客户端？")) {
+  if(confirm("是否安装我们的客户端？")){
     alert("正在为你安装中...");
-    location.href = "01.ipa";
+    window.location = "itms-services://?action=download-manifest&url=./manifest.plist";
   }
 }
 </script>
