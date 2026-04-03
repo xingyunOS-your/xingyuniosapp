@@ -14,13 +14,16 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
 .download-btn{display:block;width:100%;padding:16px;border-radius:12px;border:none;font-size:18px;font-weight:bold;color:#fff;background:#222;cursor:pointer}
 .btn-aisi{background:#0066cc}
 .btn-sign{background:#00b894}
-.contact{text-align:center;color:#888;font-size:14px;line-height:1.8}
+.btn-gta{background:#cc2222}
+.btn-in{background:#2277cc}
+.btn-ml{background:#22cc88}
 </style>
 </head>
 <body>
 <div class="container">
   <div class="title">xingyun下载站</div>
   <div class="desc">专注苹果应用下载<br>所有资源均测试可用，放心下载</div>
+  
   <div class="btn-box">
     <button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
       爱思下载 | 密码：1314520
@@ -28,14 +31,25 @@ body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
     <button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
       签名应用 | 密码：1314520
     </button>
+
+    <!-- 你要的 3 个真实安装按钮 -->
+    <button class="download-btn btn-gta" onclick="location.href='itms-services://?action=download-manifest&url=./gta.plist'">
+      安装 GTA
+    </button>
+    <button class="download-btn btn-in" onclick="location.href='itms-services://?action=download-manifest&url=./in.plist'">
+      安装 无尽之剑 高版本
+    </button>
+    <button class="download-btn btn-ml" onclick="location.href='itms-services://?action=download-manifest&url=./ml.plist'">
+      安装 无尽之剑 低版本
+    </button>
   </div>
+
   <div class="contact">
     交流群：1013017510
   </div>
 </div>
 
 <script>
-// 电脑访问不弹
 function isPC() {
   return !/Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 }
@@ -43,10 +57,6 @@ if(isPC()){
   alert("电脑端仅支持预览，请使用手机访问！");
 } else {
   alert("本IPA并未签名，请越狱设备安装！");
-  if(confirm("是否安装我们的客户端？")){
-    alert("正在为你安装中...");
-    window.location = "itms-services://?action=download-manifest&url=./manifest.plist";
-  }
 }
 </script>
 </body>
