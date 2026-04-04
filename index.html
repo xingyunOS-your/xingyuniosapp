@@ -7,6 +7,17 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMacSystemFont,"微软雅黑",sans-serif;line-height:1.6}
+/* 右上角设置 */
+.setting-box{position:fixed;top:15px;right:15px;z-index:999}
+.set-btn{background:#fff;color:#000;border:none;padding:8px 12px;border-radius:10px;font-size:14px;font-weight:bold}
+.set-panel{display:none;background:#1a1f35;padding:15px;border-radius:12px;margin-top:10px;width:260px}
+.set-panel.show{display:block}
+.set-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.switch{width:50px;height:24px;background:#666;border-radius:12px;position:relative}
+.switch::after{content:'';width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:0.2s}
+.switch.on{background:#0ef}
+.switch.on::after{left:28px}
+.tip-bar{background:#0ef;color:#000;padding:10px;text-align:center;border-radius:10px;margin:10px 0;font-size:14px;font-weight:bold}
 .container{max-width:720px;margin:0 auto;padding:25px}
 .head-card{background:linear-gradient(135deg,#0ef,#6c63ff);padding:30px;border-radius:20px;margin:30px 0;text-align:center}
 .head-card h1{font-size:32px;margin-bottom:10px}
@@ -14,7 +25,7 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 .desc-box{background:rgba(255,255,255,0.05);padding:20px;border-radius:16px;margin:20px 0;font-size:15px;color:#ccc}
 .desc-box strong{color:#0ef}
 .btn-box{display:flex;flex-direction:column;gap:18px;margin:40px 0}
-.download-btn{display:block;width:100%;padding:22px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;cursor:pointer;transition:all 0.2s;text-align:center;text-decoration:none}
+.download-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:22px 20px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;cursor:pointer;transition:all 0.2s;text-decoration:none}
 .download-btn:active{transform:scale(0.97)}
 .btn-aisi{background:linear-gradient(90deg,#0066cc,#0088ff)}
 .btn-sign{background:linear-gradient(90deg,#00b894,#00e5b2)}
@@ -26,63 +37,101 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 </style>
 </head>
 <body>
+
+<!-- 右上角设置 -->
+<div class="setting-box">
+  <button class="set-btn" onclick="toggleSet()">设置</button>
+  <div class="set-panel" id="setPanel">
+    <div class="set-row">
+      <span>显示客户端安装按钮</span>
+      <div class="switch on" id="clientSwitch" onclick="toggleClient()"></div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
+  <!-- 顶部提示 -->
+  <div class="tip-bar">
+    ⚠️ 如果你用的是客户端打开本页面，请关闭客户端安装按钮
+  </div>
 
-<div class="head-card">
-<h1>xingyun下载站</h1>
-<p>星月IOS · 专业应用下载服务平台</p>
-</div>
+  <div class="head-card">
+    <h1>xingyun下载站</h1>
+    <p>星月IOS · 专业应用下载服务平台</p>
+  </div>
 
-<div class="desc-box">
-<strong>使用说明：</strong><br>
-• 本站所有应用均为亲测可用<br>
-• 支持未签名IPA安装，越狱设备优先使用<br>
-• 安装请确保手机电量充足，网络稳定<br>
-• 出现无法安装请切换网络或重启手机重试
-</div>
+  <div class="desc-box">
+    <strong>使用说明：</strong><br>
+    • 本站所有应用均为亲测可用<br>
+    • 支持未签名IPA安装，越狱设备优先使用<br>
+    • 安装请确保电量充足、网络稳定<br>
+    • 无法安装请切换网络或重启手机
+  </div>
 
-<div class="btn-box">
-<button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
-🔗 爱思下载 | 密码：1314520
-</button>
+  <div class="btn-box" id="btnBox">
+    <button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
+      <span>🔗 爱思下载</span>
+      <span>密码：1314520</span>
+    </button>
 
-<button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
-📱 签名应用合集 | 密码：1314520
-</button>
+    <button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
+      <span>📱 签名应用合集</span>
+      <span>密码：1314520</span>
+    </button>
 
-<button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
-🚀 官方COF安装包
-</button>
+    <button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
+      <span>🚀 官方COF安装包</span>
+      <span></span>
+    </button>
 
-<a class="download-btn btn-install" href="itms-services://?action=download-manifest&url=manifest.plist">
-⚙️ 安装客户端（01.ipa）
-</a>
+    <!-- 安装客户端按钮 -->
+    <a class="download-btn btn-install" id="installBtn" href="itms-services://?action=download-manifest&url=manifest.plist">
+      <span>⚙️ 安装客户端（01.ipa）</span>
+      <span></span>
+    </a>
 
-<button class="download-btn btn-net1" onclick="window.open('http://myios.lanzoum.com/s/mvp')">
-💾 非本站创造网盘 | 密码：2023
-</button>
+    <button class="download-btn btn-net1" onclick="window.open('http://myios.lanzoum.com/s/mvp')">
+      <span>💾 非本站创造网盘</span>
+      <span>密码：2023</span>
+    </button>
 
-<button class="download-btn btn-net2" onclick="window.open('http://wwrd.lanzoum.com/b00zxpy0ti')">
-💿 非本站创造网盘 | 密码：conw
-</button>
-</div>
+    <button class="download-btn btn-net2" onclick="window.open('http://wwrd.lanzoum.com/b00zxpy0ti')">
+      <span>💿 非本站创造网盘</span>
+      <span>密码：conw</span>
+    </button>
+  </div>
 
-<div class="desc-box">
-<strong>安装帮助：</strong><br>
-• 点击【安装客户端】会自动开始安装<br>
-• 安装完成后，请前往设置通用描述文件信任<br>
-• 未越狱设备可能需要签名后使用
-</div>
+  <div class="desc-box">
+    <strong>安装帮助：</strong><br>
+    • 点击安装后会自动开始安装<br>
+    • 安装完成请去设置-通用-描述文件信任<br>
+    • 未越狱设备需签名后使用
+  </div>
 
-<div class="footer">
-星月IOS下载站 版权所有<br>
-官方交流群：1013017510<br>
-2026 稳定运行中
-</div>
-
+  <div class="footer">
+    星月IOS下载站 版权所有<br>
+    官方交流群：1013017510<br>
+    2026 稳定运行中
+  </div>
 </div>
 
 <script>
+// 设置面板显示隐藏
+function toggleSet(){
+  document.getElementById("setPanel").classList.toggle("show");
+}
+// 开关控制安装按钮
+let show = true;
+function toggleClient(){
+  show = !show;
+  document.getElementById("clientSwitch").classList.toggle("on");
+  if(show){
+    document.getElementById("installBtn").style.display = "flex";
+  }else{
+    document.getElementById("installBtn").style.display = "none";
+  }
+}
+// 电脑判断
 function isPC() {
   return !/Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 }
