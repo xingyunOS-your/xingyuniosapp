@@ -2,42 +2,80 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>xingyun下载站</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>xingyun下载站 - 星月IOS官方下载平台</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#121212;color:#fff;font-family:Arial,"微软雅黑",sans-serif}
-.container{max-width:700px;margin:0 auto;padding:20px}
-.title{text-align:center;font-size:26px;font-weight:bold;margin:30px 0;color:#0ef}
-.desc{text-align:center;color:#aaa;margin-bottom:30px;line-height:1.6}
-.btn-box{display:flex;flex-direction:column;gap:15px;margin-bottom:40px}
-.download-btn{display:block;width:100%;padding:16px;border-radius:12px;border:none;font-size:18px;font-weight:bold;color:#fff;background:#222;cursor:pointer}
-.btn-aisi{background:#0066cc}
-.btn-sign{background:#00b894}
-.btn-cof{background:#9933cc}
-.contact{text-align:center;color:#aaa;font-size:14px}
+body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;line-height:1.6}
+.container{max-width:720px;margin:0 auto;padding:25px}
+.head-card{background:linear-gradient(135deg,#0ef,#6c63ff);padding:30px;border-radius:20px;margin:30px 0;text-align:center}
+.head-card h1{font-size:32px;margin-bottom:10px}
+.head-card p{font-size:16px;opacity:0.9}
+.desc-box{background:rgba(255,255,255,0.05);padding:20px;border-radius:16px;margin:20px 0;font-size:15px;color:#ccc}
+.desc-box strong{color:#0ef}
+.btn-box{display:flex;flex-direction:column;gap:18px;margin:40px 0}
+.download-btn{display:block;width:100%;padding:22px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;background:#1a1f35;cursor:pointer;transition:all 0.2s;text-align:center;text-decoration:none}
+.download-btn:active{transform:scale(0.97)}
+.btn-aisi{background:linear-gradient(90deg,#0066cc,#0088ff)}
+.btn-sign{background:linear-gradient(90deg,#00b894,#00e5b2)}
+.btn-cof{background:linear-gradient(90deg,#9933cc,#bb33ff)}
+.btn-install{background:linear-gradient(90deg,#ff4757,#ff6b6b)}
+.footer{text-align:center;color:#777;font-size:14px;margin:50px 0 20px}
+.warning{background:rgba(255,69,69,0.1);color:#ff9999;padding:15px;border-radius:12px;margin:20px 0;font-size:14px;text-align:center}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="title">xingyun下载站</div>
-  <div class="desc">专注苹果应用下载<br>所有资源均测试可用，放心下载</div>
-  
-  <div class="btn-box">
-    <button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
-      爱思下载 | 密码：1314520
-    </button>
-    <button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
-      签名应用 | 密码：1314520
-    </button>
-    <button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
-      下载 COF
-    </button>
-  </div>
 
-  <div class="contact">
-    交流群：1013017510
-  </div>
+<div class="head-card">
+<h1>xingyun下载站</h1>
+<p>星月IOS · 专业应用下载服务平台</p>
+</div>
+
+<div class="desc-box">
+<strong>使用说明：</strong><br>
+• 本站所有应用均为亲测可用<br>
+• 支持未签名IPA安装，越狱设备优先使用<br>
+• 安装请确保手机电量充足，网络稳定<br>
+• 出现无法安装请切换网络或重启手机重试
+</div>
+
+<div class="warning">
+⚠️ 提示：电脑端仅支持预览，请使用iPhone / iPad访问本站
+</div>
+
+<div class="btn-box">
+<a class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
+🔗 爱思助手下载 | 密码：1314520
+</a>
+
+<a class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
+📱 签名应用合集下载 | 密码：1314520
+</a>
+
+<a class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
+🚀 官方COF安装包下载
+</a>
+
+<!-- 你要的：安装客户端 一键安装同目录 01.ipa + manifest.plist -->
+<a class="download-btn btn-install" href="itms-services://?action=download-manifest&url=manifest.plist">
+⚙️ 安装客户端（01.ipa）
+</a>
+</div>
+
+<div class="desc-box">
+<strong>安装帮助：</strong><br>
+• 点击【安装客户端】会自动开始安装<br>
+• 安装完成后，请前往设置通用描述文件信任<br>
+• 未越狱设备可能需要签名后使用
+</div>
+
+<div class="footer">
+星月IOS下载站 版权所有<br>
+官方交流群：1013017510<br>
+2026 稳定运行中
+</div>
+
 </div>
 
 <script>
@@ -45,10 +83,10 @@ function isPC() {
   return !/Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 }
 if(isPC()){
-  alert("电脑端仅支持预览，请使用手机访问！");
-} else {
-  alert("本IPA并未签名，建议越狱设备使用IPA Installer安装！");
+  alert("温馨提示：电脑端无法安装IPA，请使用手机Safari浏览器访问！");
 }
 </script>
+
 </body>
 </html>
+
