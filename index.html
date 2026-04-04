@@ -6,7 +6,7 @@
 <title>xingyun下载站 - 星月IOS官方下载平台</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMacSystemFont, "微软雅黑", sans-serif;line-height:1.6}
+body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMacSystemFont,"微软雅黑",sans-serif;line-height:1.6}
 .container{max-width:720px;margin:0 auto;padding:25px}
 .head-card{background:linear-gradient(135deg,#0ef,#6c63ff);padding:30px;border-radius:20px;margin:30px 0;text-align:center}
 .head-card h1{font-size:32px;margin-bottom:10px}
@@ -14,14 +14,15 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 .desc-box{background:rgba(255,255,255,0.05);padding:20px;border-radius:16px;margin:20px 0;font-size:15px;color:#ccc}
 .desc-box strong{color:#0ef}
 .btn-box{display:flex;flex-direction:column;gap:18px;margin:40px 0}
-.download-btn{display:block;width:100%;padding:22px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;background:#1a1f35;cursor:pointer;transition:all 0.2s;text-align:center;text-decoration:none}
+.download-btn{display:block;width:100%;padding:22px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;cursor:pointer;transition:all 0.2s;text-align:center;text-decoration:none}
 .download-btn:active{transform:scale(0.97)}
 .btn-aisi{background:linear-gradient(90deg,#0066cc,#0088ff)}
 .btn-sign{background:linear-gradient(90deg,#00b894,#00e5b2)}
 .btn-cof{background:linear-gradient(90deg,#9933cc,#bb33ff)}
 .btn-install{background:linear-gradient(90deg,#ff4757,#ff6b6b)}
+.btn-net1{background:linear-gradient(90deg,#d35400,#e67e22)}
+.btn-net2{background:linear-gradient(90deg,#27ae60,#2ecc71)}
 .footer{text-align:center;color:#777;font-size:14px;margin:50px 0 20px}
-.warning{background:rgba(255,69,69,0.1);color:#ff9999;padding:15px;border-radius:12px;margin:20px 0;font-size:14px;text-align:center}
 </style>
 </head>
 <body>
@@ -40,27 +41,30 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 • 出现无法安装请切换网络或重启手机重试
 </div>
 
-<div class="warning">
-⚠️ 提示：电脑端仅支持预览，请使用iPhone / iPad访问本站
-</div>
-
 <div class="btn-box">
-<a class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
-🔗 爱思助手下载 | 密码：1314520
-</a>
+<button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
+🔗 爱思下载 | 密码：1314520
+</button>
 
-<a class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
-📱 签名应用合集下载 | 密码：1314520
-</a>
+<button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
+📱 签名应用合集 | 密码：1314520
+</button>
 
-<a class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
-🚀 官方COF安装包下载
-</a>
+<button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
+🚀 官方COF安装包
+</button>
 
-<!-- 你要的：安装客户端 一键安装同目录 01.ipa + manifest.plist -->
 <a class="download-btn btn-install" href="itms-services://?action=download-manifest&url=manifest.plist">
 ⚙️ 安装客户端（01.ipa）
 </a>
+
+<button class="download-btn btn-net1" onclick="window.open('http://myios.lanzoum.com/s/mvp')">
+💾 非本站创造网盘 | 密码：2023
+</button>
+
+<button class="download-btn btn-net2" onclick="window.open('http://wwrd.lanzoum.com/b00zxpy0ti')">
+💿 非本站创造网盘 | 密码：conw
+</button>
 </div>
 
 <div class="desc-box">
@@ -86,7 +90,5 @@ if(isPC()){
   alert("温馨提示：电脑端无法安装IPA，请使用手机Safari浏览器访问！");
 }
 </script>
-
 </body>
 </html>
-
