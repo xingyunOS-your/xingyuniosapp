@@ -27,6 +27,11 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 .btn-box{display:flex;flex-direction:column;gap:18px;margin:40px 0}
 .download-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:22px 20px;border-radius:18px;border:none;font-size:18px;font-weight:bold;color:#fff;cursor:pointer;transition:all 0.2s;text-decoration:none}
 .download-btn:active{transform:scale(0.97)}
+/* 新增按钮专属样式 */
+.btn-our{background:linear-gradient(90deg,#8e44ad,#9b59b6)}
+.btn-xiaohei{background:linear-gradient(90deg,#2c3e50,#34495e)}
+.btn-xiaoguo{background:linear-gradient(90deg,#f39c12,#f1c40f)}
+/* 原有按钮样式 */
 .btn-aisi{background:linear-gradient(90deg,#0066cc,#0088ff)}
 .btn-sign{background:linear-gradient(90deg,#00b894,#00e5b2)}
 .btn-cof{background:linear-gradient(90deg,#9933cc,#bb33ff)}
@@ -34,110 +39,689 @@ body{background:#080c18;color:#fff;font-family:system-ui, -apple-system, BlinkMa
 .btn-net1{background:linear-gradient(90deg,#d35400,#e67e22)}
 .btn-net2{background:linear-gradient(90deg,#27ae60,#2ecc71)}
 .footer{text-align:center;color:#777;font-size:14px;margin:50px 0 20px}
+/* 语言切换 */
+.lang-switch{position:fixed;top:15px;left:15px;z-index:999}
+.lang-btn{background:#1a1f35;color:#0ef;border:1px solid #0ef;padding:8px 12px;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer}
+.lang-menu{display:none;position:absolute;top:45px;left:0;background:#1a1f35;border-radius:12px;overflow:hidden;min-width:120px}
+.lang-menu.show{display:block}
+.lang-item{padding:10px 15px;cursor:pointer;transition:0.2s}
+.lang-item:hover{background:#0ef;color:#000}
+/* 动画效果 */
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.head-card,.desc-box,.download-btn{animation:fadeIn 0.6s ease-out}
+.head-card{animation-delay:0.1s}
+.desc-box:nth-of-type(1){animation-delay:0.2s}
+.btn-box{animation-delay:0.3s}
+.desc-box:nth-of-type(2){animation-delay:0.4s}
+.footer{animation-delay:0.5s}
+/* 滚动条美化 */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#080c18}
+::-webkit-scrollbar-thumb{background:#0ef;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#00cccc}
+/* 响应式优化 */
+@media(max-width:480px){
+.head-card h1{font-size:26px}
+.download-btn{font-size:16px;padding:18px 15px}
+.set-panel{width:200px}
+}
+/* 加载动画 */
+.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#080c18;z-index:9999;display:flex;justify-content:center;align-items:center;transition:opacity 0.5s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.spinner{width:50px;height:50px;border:3px solid #1a1f35;border-top-color:#0ef;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* 粒子背景 */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;width:4px;height:4px;background:#0ef;border-radius:50%;opacity:0.3;animation:float 15s infinite}
+@keyframes float{0%,100%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:0.3}90%{opacity:0.3}100%{transform:translateY(-100vh) rotate(720deg);opacity:0}}
 </style>
 </head>
 <body>
+
+<!-- 加载动画 -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+</div>
+
+<!-- 粒子背景 -->
+<div class="particles" id="particles"></div>
+
+<!-- 语言切换 -->
+<div class="lang-switch">
+  <button class="lang-btn" onclick="toggleLangMenu()">🌐 <span id="currentLang">中文</span></button>
+  <div class="lang-menu" id="langMenu">
+    <div class="lang-item" onclick="setLang('zh')">中文</div>
+    <div class="lang-item" onclick="setLang('en')">English</div>
+    <div class="lang-item" onclick="setLang('ja')">日本語</div>
+    <div class="lang-item" onclick="setLang('ko')">한국어</div>
+    <div class="lang-item" onclick="setLang('ru')">Русский</div>
+    <div class="lang-item" onclick="setLang('ar')">العربية</div>
+    <div class="lang-item" onclick="setLang('fr')">Français</div>
+    <div class="lang-item" onclick="setLang('de')">Deutsch</div>
+  </div>
+</div>
 
 <!-- 右上角设置 -->
 <div class="setting-box">
   <button class="set-btn" onclick="toggleSet()">设置</button>
   <div class="set-panel" id="setPanel">
     <div class="set-row">
-      <span>显示客户端安装按钮</span>
+      <span id="clientSwitchLabel">显示客户端安装按钮</span>
       <div class="switch on" id="clientSwitch" onclick="toggleClient()"></div>
+    </div>
+    <div class="set-row">
+      <span id="animSwitchLabel">启用动画效果</span>
+      <div class="switch on" id="animSwitch" onclick="toggleAnim()"></div>
+    </div>
+    <div class="set-row">
+      <span id="particleSwitchLabel">粒子背景</span>
+      <div class="switch on" id="particleSwitch" onclick="toggleParticles()"></div>
     </div>
   </div>
 </div>
 
 <div class="container">
   <!-- 顶部提示 -->
-  <div class="tip-bar">
+  <div class="tip-bar" id="tipBar">
     ⚠️ 如果你用的是客户端打开本页面，请关闭客户端安装按钮
   </div>
 
   <div class="head-card">
-    <h1>xingyun下载站</h1>
-    <p>星月IOS · 专业应用下载服务平台</p>
+    <h1 id="siteTitle">xingyun下载站</h1>
+    <p id="siteSubtitle">星月IOS · 专业应用下载服务平台</p>
   </div>
 
-  <div class="desc-box">
-    <strong>使用说明：</strong><br>
-    • 本站所有应用均为亲测可用<br>
-    • 支持未签名IPA安装，越狱设备优先使用<br>
-    • 安装请确保电量充足、网络稳定<br>
-    • 无法安装请切换网络或重启手机
+  <div class="desc-box" id="descBox1">
+    <strong id="usageTitle">使用说明：</strong><br>
+    <span id="usageContent">• 本站所有应用均为亲测可用<br>• 支持未签名IPA安装，越狱设备优先使用<br>• 安装请确保电量充足、网络稳定<br>• 无法安装请切换网络或重启手机</span>
   </div>
 
   <div class="btn-box" id="btnBox">
+    <!-- 新增：最顶部 我们创造的应用按钮 -->
+    <button class="download-btn btn-our" onclick="window.open('https://wwalu.lanzoub.com/b016kpm33c')">
+      <span id="btnOur">📦 我们创造的应用</span>
+      <span id="pwdOur">密码：1314520</span>
+    </button>
+
+    <!-- 新增：小黑下载站按钮 -->
+    <button class="download-btn btn-xiaohei" onclick="window.open('https://xhiosapp.mysxl.cn')">
+      <span id="btnXiaohei">🌑 小黑下载站</span>
+      <span id="btnXiaoheiRight">立即跳转</span>
+    </button>
+
+    <!-- 新增：小果搞数码创造网盘按钮 -->
+    <button class="download-btn btn-xiaoguo" onclick="window.open('https://nopd.lanzoup.com/s/ios-app')">
+      <span id="btnXiaoguo">💿 小果搞数码创造网盘</span>
+      <span id="pwdXiaoguo">密码：1145</span>
+    </button>
+
+    <!-- 原有按钮 -->
     <button class="download-btn btn-aisi" onclick="window.open('https://wwalu.lanzoub.com/b016kefmrc')">
-      <span>🔗 爱思下载</span>
-      <span>密码：1314520</span>
+      <span id="btnAisi">🔗 爱思下载</span>
+      <span id="pwdAisi">密码：1314520</span>
     </button>
 
     <button class="download-btn btn-sign" onclick="window.open('https://wwalu.lanzoub.com/b016kefmmh')">
-      <span>📱 签名应用合集</span>
-      <span>密码：1314520</span>
+      <span id="btnSign">📱 签名应用合集</span>
+      <span id="pwdSign">密码：1314520</span>
     </button>
 
     <button class="download-btn btn-cof" onclick="window.open('https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa')">
-      <span>🚀 官方COF安装包</span>
+      <span id="btnCof">🚀 官方COF安装包</span>
       <span></span>
     </button>
 
     <!-- 安装客户端按钮 -->
     <a class="download-btn btn-install" id="installBtn" href="itms-services://?action=download-manifest&url=manifest.plist">
-      <span>⚙️ 安装客户端（01.ipa）</span>
+      <span id="btnInstall">⚙️ 安装客户端（01.ipa）</span>
       <span></span>
     </a>
 
     <button class="download-btn btn-net1" onclick="window.open('http://myios.lanzoum.com/s/mvp')">
-      <span>💾 非本站创造网盘</span>
-      <span>密码：2023</span>
+      <span id="btnNet1">💾 非本站创造网盘</span>
+      <span id="pwdNet1">密码：2023</span>
     </button>
 
     <button class="download-btn btn-net2" onclick="window.open('http://wwrd.lanzoum.com/b00zxpy0ti')">
-      <span>💿 非本站创造网盘</span>
-      <span>密码：conw</span>
+      <span id="btnNet2">💿 非本站创造网盘</span>
+      <span id="pwdNet2">密码：conw</span>
     </button>
   </div>
 
-  <div class="desc-box">
-    <strong>安装帮助：</strong><br>
-    • 点击安装后会自动开始安装<br>
-    • 安装完成请去设置-通用-描述文件信任<br>
-    • 未越狱设备需签名后使用
+  <div class="desc-box" id="descBox2">
+    <strong id="helpTitle">安装帮助：</strong><br>
+    <span id="helpContent">• 点击安装后会自动开始安装<br>• 安装完成请去设置-通用-描述文件信任<br>• 未越狱设备需签名后使用</span>
   </div>
 
-  <div class="footer">
+  <div class="footer" id="footer">
     星月IOS下载站 版权所有<br>
-    官方交流群：1013017510<br>
+    官方交流群：1094363023<br>
     2026 稳定运行中
   </div>
 </div>
 
 <script>
-// 设置面板显示隐藏
-function toggleSet(){
-  document.getElementById("setPanel").classList.toggle("show");
+// 多语言数据
+const i18n = {
+  zh: {
+    langName: "中文",
+    tipBar: "⚠️ 如果你用的是客户端打开本页面，请关闭客户端安装按钮",
+    siteTitle: "xingyun下载站",
+    siteSubtitle: "星月IOS · 专业应用下载服务平台",
+    usageTitle: "使用说明：",
+    usageContent: "• 本站所有应用均为亲测可用<br>• 支持未签名IPA安装，越狱设备优先使用<br>• 安装请确保电量充足、网络稳定<br>• 无法安装请切换网络或重启手机",
+    // 新增按钮多语言
+    btnOur: "📦 我们创造的应用",
+    pwdOur: "密码：1314520",
+    btnXiaohei: "🌑 小黑下载站",
+    btnXiaoheiRight: "立即跳转",
+    btnXiaoguo: "💿 小果搞数码创造网盘",
+    pwdXiaoguo: "密码：1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 爱思下载",
+    pwdAisi: "密码：1314520",
+    btnSign: "📱 签名应用合集",
+    pwdSign: "密码：1314520",
+    btnCof: "🚀 官方COF安装包",
+    btnInstall: "⚙️ 安装客户端（01.ipa）",
+    btnNet1: "💾 非本站创造网盘",
+    pwdNet1: "密码：2023",
+    btnNet2: "💿 非本站创造网盘",
+    pwdNet2: "密码：conw",
+    helpTitle: "安装帮助：",
+    helpContent: "• 点击安装后会自动开始安装<br>• 安装完成请去设置-通用-描述文件信任<br>• 未越狱设备需签名后使用",
+    footer: "星月IOS下载站 版权所有<br>官方交流群：1094363023<br>2026 稳定运行中",
+    clientSwitchLabel: "显示客户端安装按钮",
+    animSwitchLabel: "启用动画效果",
+    particleSwitchLabel: "粒子背景",
+    settings: "设置"
+  },
+  en: {
+    langName: "English",
+    tipBar: "⚠️ If you are opening this page via client, please disable the client install button",
+    siteTitle: "xingyun Download",
+    siteSubtitle: "Xingyue IOS · Professional App Download Platform",
+    usageTitle: "Instructions:",
+    usageContent: "• All apps on this site are tested and working<br>• Supports unsigned IPA installation, jailbroken devices preferred<br>• Ensure sufficient battery and stable network during installation<br>• If installation fails, switch network or restart your device",
+    // 新增按钮多语言
+    btnOur: "📦 Our Created Apps",
+    pwdOur: "Password: 1314520",
+    btnXiaohei: "🌑 Xiaohei Download Station",
+    btnXiaoheiRight: "Jump Now",
+    btnXiaoguo: "💿 Xiaoguo Digital Cloud Drive",
+    pwdXiaoguo: "Password: 1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools Download",
+    pwdAisi: "Password: 1314520",
+    btnSign: "📱 Signed Apps Collection",
+    pwdSign: "Password: 1314520",
+    btnCof: "🚀 Official COF Package",
+    btnInstall: "⚙️ Install Client (01.ipa)",
+    btnNet1: "💾 External Cloud Drive 1",
+    pwdNet1: "Password: 2023",
+    btnNet2: "💿 External Cloud Drive 2",
+    pwdNet2: "Password: conw",
+    helpTitle: "Installation Help:",
+    helpContent: "• Installation will start automatically after clicking<br>• After installation, go to Settings - General - Profile to trust<br>• Non-jailbroken devices need to be signed before use",
+    footer: "Xingyue IOS Download Station All Rights Reserved<br>Official Group: 1094363023<br>2026 Running Stable",
+    clientSwitchLabel: "Show Client Install Button",
+    animSwitchLabel: "Enable Animations",
+    particleSwitchLabel: "Particle Background",
+    settings: "Settings"
+  },
+  ja: {
+    langName: "日本語",
+    tipBar: "⚠️ クライアントでこのページを開いている場合は、クライアントインストールボタンをオフにしてください",
+    siteTitle: "xingyunダウンロード",
+    siteSubtitle: "星月IOS · プロのアプリダウンロードプラットフォーム",
+    usageTitle: "使用説明：",
+    usageContent: "• 当サイトのアプリはすべて動作確認済みです<br>• 署名なしIPAインストールをサポート、脱獄デバイス優先<br>• インストール時は十分なバッテリーと安定したネットワークを確保<br>• インストールできない場合はネットワークを切り替えるか再起動",
+    // 新增按钮多语言
+    btnOur: "📦 私たちが作成したアプリ",
+    pwdOur: "パスワード：1314520",
+    btnXiaohei: "🌑 黒ダウンロードステーション",
+    btnXiaoheiRight: "すぐジャンプ",
+    btnXiaoguo: "💿 小果デジタルクラウド",
+    pwdXiaoguo: "パスワード：1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Toolsダウンロード",
+    pwdAisi: "パスワード：1314520",
+    btnSign: "📱 署名アプリ集",
+    pwdSign: "パスワード：1314520",
+    btnCof: "🚀 公式COFパッケージ",
+    btnInstall: "⚙️ クライアントをインストール（01.ipa）",
+    btnNet1: "💾 外部クラウドドライブ1",
+    pwdNet1: "パスワード：2023",
+    btnNet2: "💿 外部クラウドドライブ2",
+    pwdNet2: "パスワード：conw",
+    helpTitle: "インストールヘルプ：",
+    helpContent: "• クリック後、自動的にインストールが開始されます<br>• インストール後、設定 - 一般 - プロファイルで信頼してください<br>• 非脱獄デバイスは使用前に署名が必要",
+    footer: "星月IOSダウンロードステーション 著作権所有<br>公式グループ：1094363023<br>2026 安定稼働中",
+    clientSwitchLabel: "クライアントインストールボタンを表示",
+    animSwitchLabel: "アニメーションを有効化",
+    particleSwitchLabel: "粒子背景",
+    settings: "設定"
+  },
+  ko: {
+    langName: "한국어",
+    tipBar: "⚠️ 클라이언트로 이 페이지를 여는 경우 클라이언트 설치 버튼을 끄세요",
+    siteTitle: "xingyun 다운로드",
+    siteSubtitle: "성월IOS · 전문 앱 다운로드 플랫폼",
+    usageTitle: "사용 설명：",
+    usageContent: "• 이 사이트의 모든 앱은 테스트 완료<br>• 서명되지 않은 IPA 설치 지원, 탈옥 기기 우선<br>• 설치 시 충분한 배터리와 안정적인 네트워크 확인<br>• 설치 실패 시 네트워크 전환 또는 재부팅",
+    // 新增按钮多语言
+    btnOur: "📦 저희가 만든 앱",
+    pwdOur: "비밀번호：1314520",
+    btnXiaohei: "🌑 검은 다운로드 스테이션",
+    btnXiaoheiRight: "지금 이동",
+    btnXiaoguo: "💿 샤오과 디지털 클라우드",
+    pwdXiaoguo: "비밀번호：1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools 다운로드",
+    pwdAisi: "비밀번호：1314520",
+    btnSign: "📱 서명된 앱 모음",
+    pwdSign: "비밀번호：1314520",
+    btnCof: "🚀 공식 COF 패키지",
+    btnInstall: "⚙️ 클라이언트 설치（01.ipa）",
+    btnNet1: "💾 외부 클라우드 드라이브 1",
+    pwdNet1: "비밀번호：2023",
+    btnNet2: "💿 외부 클라우드 드라이브 2",
+    pwdNet2: "비밀번호：conw",
+    helpTitle: "설치 도움말：",
+    helpContent: "• 클릭 후 자동으로 설치 시작<br>• 설치 완료 후 설정 - 일반 - 프로필에서 신뢰<br>• 탈옥되지 않은 기기는 서명 필요",
+    footer: "성월IOS 다운로드 스테이션 저작권 소유<br>공식 그룹：1094363023<br>2026 안정 운영 중",
+    clientSwitchLabel: "클라이언트 설치 버튼 표시",
+    animSwitchLabel: "애니메이션 활성화",
+    particleSwitchLabel: "입자 배경",
+    settings: "설정"
+  },
+  ru: {
+    langName: "Русский",
+    tipBar: "⚠️ Если вы открыли эту страницу через клиент, отключите кнопку установки клиента",
+    siteTitle: "xingyun Загрузки",
+    siteSubtitle: "Xingyue IOS · Профессиональная платформа загрузки приложений",
+    usageTitle: "Инструкции:",
+    usageContent: "• Все приложения на сайте протестированы<br>• Поддержка установки неподписанных IPA, приоритет для джейлбрейк-устройств<br>• Обеспечьте достаточный заряд и стабильную сеть<br>• При сбое установки смените сеть или перезагрузите",
+    // 新增按钮多语言
+    btnOur: "📦 Наши приложения",
+    pwdOur: "Пароль: 1314520",
+    btnXiaohei: "🌑 Черная станция загрузок",
+    btnXiaoheiRight: "Перейти сейчас",
+    btnXiaoguo: "💿 Облако Xiaoguo Digital",
+    pwdXiaoguo: "Пароль: 1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools Загрузка",
+    pwdAisi: "Пароль: 1314520",
+    btnSign: "📱 Коллекция подписанных приложений",
+    pwdSign: "Пароль: 1314520",
+    btnCof: "🚀 Официальный COF пакет",
+    btnInstall: "⚙️ Установить клиент (01.ipa)",
+    btnNet1: "💾 Внешнее облако 1",
+    pwdNet1: "Пароль: 2023",
+    btnNet2: "💿 Внешнее облако 2",
+    pwdNet2: "Пароль: conw",
+    helpTitle: "Помощь по установке:",
+    helpContent: "• Установка начнется автоматически<br>• После установки доверьте профиль в Настройки - Основные<br>• Не-джейлбрейк устройства требуют подписи",
+    footer: "Xingyue IOS Download Station Все права защищены<br>Официальная группа: 1094363023<br>2026 Стабильная работа",
+    clientSwitchLabel: "Показать кнопку установки",
+    animSwitchLabel: "Включить анимации",
+    particleSwitchLabel: "Частицы фона",
+    settings: "Настройки"
+  },
+  ar: {
+    langName: "العربية",
+    tipBar: "⚠️ إذا كنت تفتح هذه الصفحة عبر العميل، يرجى تعطيل زر تثبيت العميل",
+    siteTitle: "xingyun التنزيلات",
+    siteSubtitle: "Xingyue IOS · منصة تنزيل التطبيقات الاحترافية",
+    usageTitle: "تعليمات الاستخدام:",
+    usageContent: "• جميع التطبيقات على الموقع مجربة<br>• دعم تثبيت IPA غير موقعة، الأجهزة المفكوكة أولوية<br>• تأكد من شحن البطارية والشبكة المستقرة<br>• إذا فشل التثبيت، غير الشبكة أو أعد التشغيل",
+    // 新增按钮多语言
+    btnOur: "📦 تطبيقاتنا",
+    pwdOur: "كلمة المرور: 1314520",
+    btnXiaohei: "🌑 محطة التنزيل السوداء",
+    btnXiaoheiRight: "انتقل الآن",
+    btnXiaoguo: "💿 سحابة Xiaoguo الرقمية",
+    pwdXiaoguo: "كلمة المرور: 1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools تنزيل",
+    pwdAisi: "كلمة المرور: 1314520",
+    btnSign: "📱 مجموعة التطبيقات الموقعة",
+    pwdSign: "كلمة المرور: 1314520",
+    btnCof: "🚀 حزمة COF الرسمية",
+    btnInstall: "⚙️ تثبيت العميل (01.ipa)",
+    btnNet1: "💾 التخزين السحابي الخارجي 1",
+    pwdNet1: "كلمة المرور: 2023",
+    btnNet2: "💿 التخزين السحابي الخارجي 2",
+    pwdNet2: "كلمة المرور: conw",
+    helpTitle: "مساعدة التثبيت:",
+    helpContent: "• يبدأ التثبيت تلقائياً بعد النقر<br>• بعد التثبيت، اذهب للإعدادات - عام - الملف الشخصي للثقة<br>• الأجهزة غير المفكوكة تحتاج توقيع",
+    footer: "محطة تنزيل Xingyue IOS جميع الحقوق محفوظة<br>المجموعة الرسمية: 1094363023<br>2026 يعمل باستقرار",
+    clientSwitchLabel: "إظهار زر تثبيت العميل",
+    animSwitchLabel: "تفعيل الرسوم المتحركة",
+    particleSwitchLabel: "خلفية الجسيمات",
+    settings: "الإعدادات"
+  },
+  fr: {
+    langName: "Français",
+    tipBar: "⚠️ Si vous ouvrez cette page via le client, veuillez désactiver le bouton d'installation client",
+    siteTitle: "xingyun Téléchargement",
+    siteSubtitle: "Xingyue IOS · Plateforme de téléchargement d'applications professionnelle",
+    usageTitle: "Instructions:",
+    usageContent: "• Toutes les applications sont testées<br>• Support d'installation IPA non signée, appareils jailbreakés prioritaires<br>• Assurez-vous d'avoir assez de batterie et un réseau stable<br>• En cas d'échec, changez de réseau ou redémarrez",
+    // 新增按钮多语言
+    btnOur: "📦 Nos applications",
+    pwdOur: "Mot de passe: 1314520",
+    btnXiaohei: "🌑 Station de téléchargement Xiaohei",
+    btnXiaoheiRight: "Aller maintenant",
+    btnXiaoguo: "💿 Cloud numérique Xiaoguo",
+    pwdXiaoguo: "Mot de passe: 1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools Téléchargement",
+    pwdAisi: "Mot de passe: 1314520",
+    btnSign: "📱 Collection d'apps signées",
+    pwdSign: "Mot de passe: 1314520",
+    btnCof: "🚀 Package COF officiel",
+    btnInstall: "⚙️ Installer le client (01.ipa)",
+    btnNet1: "💾 Cloud externe 1",
+    pwdNet1: "Mot de passe: 2023",
+    btnNet2: "💿 Cloud externe 2",
+    pwdNet2: "Mot de passe: conw",
+    helpTitle: "Aide à l'installation:",
+    helpContent: "• L'installation démarre automatiquement<br>• Après l'installation, faites confiance au profil dans Réglages - Général<br>• Les appareils non-jailbreakés doivent être signés",
+    footer: "Station de téléchargement Xingyue IOS Tous droits réservés<br>Groupe officiel: 1094363023<br>2026 Fonctionnement stable",
+    clientSwitchLabel: "Afficher le bouton d'installation",
+    animSwitchLabel: "Activer les animations",
+    particleSwitchLabel: "Fond de particules",
+    settings: "Paramètres"
+  },
+  de: {
+    langName: "Deutsch",
+    tipBar: "⚠️ Wenn Sie diese Seite über den Client öffnen, deaktivieren Sie bitte die Client-Installationsschaltfläche",
+    siteTitle: "xingyun Download",
+    siteSubtitle: "Xingyue IOS · Professionelle App-Download-Plattform",
+    usageTitle: "Anleitung:",
+    usageContent: "• Alle Apps sind getestet<br>• Unterstützung für unsignierte IPA-Installation, Jailbreak-Geräte bevorzugt<br>• Stellen Sie sicher, dass genügend Akku und stabiles Netzwerk vorhanden sind<br>• Bei Installationsfehlern Netzwerk wechseln oder neu starten",
+    // 新增按钮多语言
+    btnOur: "📦 Unsere Apps",
+    pwdOur: "Passwort: 1314520",
+    btnXiaohei: "🌑 Xiaohei Download-Station",
+    btnXiaoheiRight: "Jetzt springen",
+    btnXiaoguo: "💿 Xiaoguo Digital Cloud",
+    pwdXiaoguo: "Passwort: 1145",
+    // 原有按钮多语言
+    btnAisi: "🔗 i4Tools Download",
+    pwdAisi: "Passwort: 1314520",
+    btnSign: "📱 Signierte Apps Sammlung",
+    pwdSign: "Passwort: 1314520",
+    btnCof: "🚀 Offizielles COF-Paket",
+    btnInstall: "⚙️ Client installieren (01.ipa)",
+    btnNet1: "💾 Externer Cloud-Speicher 1",
+    pwdNet1: "Passwort: 2023",
+    btnNet2: "💿 Externer Cloud-Speicher 2",
+    pwdNet2: "Passwort: conw",
+    helpTitle: "Installationshilfe:",
+    helpContent: "• Installation startet automatisch<br>• Nach der Installation unter Einstellungen - Allgemein - Profil vertrauen<br>• Nicht-Jailbreak-Geräte müssen signiert werden",
+    footer: "Xingyue IOS Download Station Alle Rechte vorbehalten<br>Offizielle Gruppe: 1094363023<br>2026 Stabil im Betrieb",
+    clientSwitchLabel: "Installationsschaltfläche anzeigen",
+    animSwitchLabel: "Animationen aktivieren",
+    particleSwitchLabel: "Partikelhintergrund",
+    settings: "Einstellungen"
+  }
+};
+
+let currentLang = 'zh';
+let showClient = true;
+let animEnabled = true;
+let particlesEnabled = true;
+
+// 初始化
+window.onload = function() {
+  createParticles();
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 800);
+  
+  // 检测浏览器语言
+  const browserLang = navigator.language || navigator.userLanguage;
+  if (browserLang.startsWith('en')) setLang('en');
+  else if (browserLang.startsWith('ja')) setLang('ja');
+  else if (browserLang.startsWith('ko')) setLang('ko');
+  else if (browserLang.startsWith('ru')) setLang('ru');
+  else if (browserLang.startsWith('ar')) setLang('ar');
+  else if (browserLang.startsWith('fr')) setLang('fr');
+  else if (browserLang.startsWith('de')) setLang('de');
+};
+
+// 语言切换
+function toggleLangMenu() {
+  document.getElementById('langMenu').classList.toggle('show');
 }
-// 开关控制安装按钮
-let show = true;
-function toggleClient(){
-  show = !show;
-  document.getElementById("clientSwitch").classList.toggle("on");
-  if(show){
-    document.getElementById("installBtn").style.display = "flex";
-  }else{
-    document.getElementById("installBtn").style.display = "none";
+
+function setLang(lang) {
+  currentLang = lang;
+  const data = i18n[lang];
+  
+  document.getElementById('currentLang').textContent = data.langName;
+  document.getElementById('tipBar').innerHTML = data.tipBar;
+  document.getElementById('siteTitle').textContent = data.siteTitle;
+  document.getElementById('siteSubtitle').textContent = data.siteSubtitle;
+  document.getElementById('usageTitle').textContent = data.usageTitle;
+  document.getElementById('usageContent').innerHTML = data.usageContent;
+  // 新增按钮语言更新
+  document.getElementById('btnOur').textContent = data.btnOur;
+  document.getElementById('pwdOur').textContent = data.pwdOur;
+  document.getElementById('btnXiaohei').textContent = data.btnXiaohei;
+  document.getElementById('btnXiaoheiRight').textContent = data.btnXiaoheiRight;
+  document.getElementById('btnXiaoguo').textContent = data.btnXiaoguo;
+  document.getElementById('pwdXiaoguo').textContent = data.pwdXiaoguo;
+  // 原有按钮语言更新
+  document.getElementById('btnAisi').textContent = data.btnAisi;
+  document.getElementById('pwdAisi').textContent = data.pwdAisi;
+  document.getElementById('btnSign').textContent = data.btnSign;
+  document.getElementById('pwdSign').textContent = data.pwdSign;
+  document.getElementById('btnCof').textContent = data.btnCof;
+  document.getElementById('btnInstall').textContent = data.btnInstall;
+  document.getElementById('btnNet1').textContent = data.btnNet1;
+  document.getElementById('pwdNet1').textContent = data.pwdNet1;
+  document.getElementById('btnNet2').textContent = data.btnNet2;
+  document.getElementById('pwdNet2').textContent = data.pwdNet2;
+  document.getElementById('helpTitle').textContent = data.helpTitle;
+  document.getElementById('helpContent').innerHTML = data.helpContent;
+  document.getElementById('footer').innerHTML = data.footer;
+  document.getElementById('clientSwitchLabel').textContent = data.clientSwitchLabel;
+  document.getElementById('animSwitchLabel').textContent = data.animSwitchLabel;
+  document.getElementById('particleSwitchLabel').textContent = data.particleSwitchLabel;
+  document.querySelector('.set-btn').textContent = data.settings;
+  
+  document.getElementById('langMenu').classList.remove('show');
+  
+  // 设置页面语言属性
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 
+                                   lang === 'en' ? 'en' :
+                                   lang === 'ja' ? 'ja' :
+                                   lang === 'ko' ? 'ko' :
+                                   lang === 'ru' ? 'ru' :
+                                   lang === 'ar' ? 'ar' :
+                                   lang === 'fr' ? 'fr' : 'de';
+  
+  // RTL支持
+  if (lang === 'ar') {
+    document.body.style.direction = 'rtl';
+  } else {
+    document.body.style.direction = 'ltr';
   }
 }
+
+// 设置面板显示隐藏
+function toggleSet() {
+  document.getElementById('setPanel').classList.toggle('show');
+}
+
+// 开关控制安装按钮
+function toggleClient() {
+  showClient = !showClient;
+  document.getElementById('clientSwitch').classList.toggle('on');
+  document.getElementById('installBtn').style.display = showClient ? 'flex' : 'none';
+}
+
+// 动画开关
+function toggleAnim() {
+  animEnabled = !animEnabled;
+  document.getElementById('animSwitch').classList.toggle('on');
+  document.querySelectorAll('.head-card, .desc-box, .download-btn').forEach(el => {
+    el.style.animation = animEnabled ? '' : 'none';
+  });
+}
+
+// 粒子开关
+function toggleParticles() {
+  particlesEnabled = !particlesEnabled;
+  document.getElementById('particleSwitch').classList.toggle('on');
+  document.getElementById('particles').style.display = particlesEnabled ? 'block' : 'none';
+}
+
+// 创建粒子
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+    container.appendChild(particle);
+  }
+}
+
+// 点击外部关闭菜单
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lang-switch')) {
+    document.getElementById('langMenu').classList.remove('show');
+  }
+  if (!e.target.closest('.setting-box')) {
+    document.getElementById('setPanel').classList.remove('show');
+  }
+});
+
 // 电脑判断
 function isPC() {
   return !/Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 }
-if(isPC()){
-  alert("温馨提示：电脑端无法安装IPA，请使用手机Safari浏览器访问！");
+if (isPC()) {
+  setTimeout(() => {
+    const msg = currentLang === 'zh' ? "温馨提示：电脑端无法安装IPA，请使用手机Safari浏览器访问！" :
+                currentLang === 'en' ? "Note: IPA cannot be installed on PC, please use mobile Safari!" :
+                currentLang === 'ja' ? "注意：PCではIPAをインストールできません、モバイルSafariをご利用ください！" :
+                currentLang === 'ko' ? "안내: PC에서는 IPA를 설치할 수 없습니다. 모바일 Safari를 사용하세요!" :
+                currentLang === 'ru' ? "Примечание: IPA нельзя установить на ПК, используйте мобильный Safari!" :
+                currentLang === 'ar' ? "ملاحظة: لا يمكن تثبيت IPA على الكمبيوتر، يرجى استخدام Safari المحمول!" :
+                currentLang === 'fr' ? "Note: IPA ne peut pas être installé sur PC, veuillez utiliser Safari mobile!" :
+                "Hinweis: IPA kann nicht auf dem PC installiert werden, bitte verwenden Sie mobile Safari!";
+    alert(msg);
+  }, 1000);
 }
+
+// 键盘快捷键
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('setPanel').classList.remove('show');
+    document.getElementById('langMenu').classList.remove('show');
+  }
+});
+
+// 平滑滚动
+function smoothScroll() {
+  document.documentElement.style.scrollBehavior = 'smooth';
+}
+smoothScroll();
+
+// 触摸反馈优化
+document.querySelectorAll('.download-btn, .set-btn, .lang-btn').forEach(btn => {
+  btn.addEventListener('touchstart', function() {
+    this.style.transform = 'scale(0.97)';
+  });
+  btn.addEventListener('touchend', function() {
+    this.style.transform = '';
+  });
+});
+
+// 页面可见性API - 节省资源
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    document.getElementById('particles').style.animationPlayState = 'paused';
+  } else {
+    document.getElementById('particles').style.animationPlayState = 'running';
+  }
+});
+
+// 性能优化：防抖resize
+let resizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    // 重新计算布局（如果需要）
+  }, 250);
+});
+
+// 预加载关键资源
+function preloadResources() {
+  const links = [
+    // 新增链接预加载
+    'https://wwalu.lanzoub.com/b016kpm33c',
+    'https://xhiosapp.mysxl.cn',
+    'https://nopd.lanzoup.com/s/ios-app',
+    // 原有链接预加载
+    'https://wwalu.lanzoub.com/b016kefmrc',
+    'https://wwalu.lanzoub.com/b016kefmmh',
+    'https://github.com/xingyunOS-your/xingyuniosapp/releases/tag/xyosiosipa'
+  ];
+  links.forEach(url => {
+    const link = document.createElement('link');
+    link.rel = 'dns-prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+  });
+}
+preloadResources();
+
+// 错误处理
+window.addEventListener('error', function(e) {
+  console.log('Resource loading error:', e.message);
+});
+
+// Service Worker 注册（离线支持占位）
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('data:text/javascript,').catch(function() {
+    // 静默处理
+  });
+}
+
+// 本地存储保存用户偏好
+function savePreferences() {
+  localStorage.setItem('xingyun_prefs', JSON.stringify({
+    lang: currentLang,
+    showClient: showClient,
+    animEnabled: animEnabled,
+    particlesEnabled: particlesEnabled
+  }));
+}
+
+function loadPreferences() {
+  const prefs = localStorage.getItem('xingyun_prefs');
+  if (prefs) {
+    const data = JSON.parse(prefs);
+    if (data.lang && data.lang !== 'zh') setLang(data.lang);
+    if (data.showClient === false) toggleClient();
+    if (data.animEnabled === false) toggleAnim();
+    if (data.particlesEnabled === false) toggleParticles();
+  }
+}
+
+// 保存偏好设置
+window.addEventListener('beforeunload', savePreferences);
+
+// 页面加载完成后加载偏好
+setTimeout(loadPreferences, 500);
 </script>
 </body>
 </html>
